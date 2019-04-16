@@ -15,14 +15,16 @@
     "url": "https://github.com/leoribeiro36/Desafio-Concrete/issues"
   },
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "body-parser": "^1.18.3",
     "cookie-parser": "~1.4.3",
+    "cors": "^2.8.5",
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
     "morgan": "^1.9.1",
-    "pug": "2.0.0-beta11",
     "pg": "6.1.0",
+    "pug": "2.0.0-beta11",
     "sequelize": "^5.5.0"
   },
   "devDependencies": {

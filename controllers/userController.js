@@ -1,25 +1,32 @@
-const User = require('../models/user')
-const Phone = require('../models/phone')
+const bcrypt = require('bcrypt')
+const User = require('../models').User
+const Phone = require('../models').Phone
 
-create = async (req, res) => {
+
+
+const create = async (req, res) => {
     try {
-        console.log(res)
-        const User = await user.findOrCreate({
+        console.log(req.body)
+        var salt = bcrypt.genSaltSync(11)
+        var hash = bcrypt.hashSync(req.body.senha, salt)
+
+        const user = await User.create({
             name: req.body.nome,
             email: req.body.email,
-            password: req.body.senha
+            password: hash
         })
         const phones = req.body.telefones
-        /* phones.forEach(element => {
-            Phone.findOrCreate({
+        phones.forEach(element => {
+            Phone.create({
                 number: element.numero,
                 ddd: element.ddd,
                 userId: user.id
             })
-        }); */
-        return res.status(200)
+        });
+        return res.status(201).send(user)
     } catch (error) {
-        res.status(400)
+        console.log(error)
+        res.status(500).send(error)
     }
 }
 

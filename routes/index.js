@@ -1,10 +1,7 @@
-var express = require('express');
 var loginRouter = require('./login');
-
-const routes = (app) => {
-  app.use('/login', loginRouter);
-}
+var statesRouter = require('./states');
 
 module.exports = (app) => {
-  routes(app)
+  app.use(loginRouter)
+  app.use(statesRouter)
 }
