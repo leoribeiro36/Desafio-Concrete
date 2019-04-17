@@ -1,8 +1,9 @@
 const router = require('express').Router()
 
-const userController = require('../controllers/userController')
+const loginController = require('../controllers/loginController')
+const loginValidation = require('../validations/loginValidation')
 
-router.post('/login', userController.create)
+router.post('/signin', loginValidation.signIn, loginController.signIn)
       .get('/login', (req, res) => res.status(200).send({
             message: 'Opa.'
         }))
