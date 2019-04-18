@@ -1,37 +1,38 @@
-const bcrypt = require('bcrypt')
-const User = require('../models').User
-const Phone = require('../models').Phone
+const bcrypt = require('bcrypt');
+const User = require('../models').User;
+const Phone = require('../models').Phone;
 const jwt = require('jsonwebtoken');
-const secret = require('../secret');
+const secret = require ('../secret')
 
-
-
-const create = async (req, res) => {
+async function checkToken(res, token) {
     try {
-        var salt = bcrypt.genSaltSync(11)
-        var hash = bcrypt.hashSync(req.body.senha, salt)
-        var token = jwt.sign({
-            data: req.body.email
-          }, secret.secret, { expiresIn: 60 * 30 });
-		
-        let user = await User.create({
-            name: req.body.nome,
-            email: req.body.email,
-            password: hash,
-			lastLogin: new Date(),
-			token: token
+        await jwt.verify(token, secret.secret);
+    } catch (error) {
+        res.status(440).send({
+            mensagem: `Sessão inválida`
+        });
+    }
+}
+
+const findUser = async (req, res) => {
+    try {
+        var user = await User.findOne({
+            attributes: ['id', 'token', 'lastLogin', 'createdAt', 'updatedAt'],
+            where: {id: req.params.id}
         })
-        const phones = req.body.telefones
-        phones.forEach(element => {
-            Phone.create({
-                number: element.numero,
-                ddd: element.ddd,
-                userId: user.id
+        if (!user) {
+            return res.status(400).send({
+                mensagem: `Usuário não existe`
             })
-		});
-		user.password = undefined
-		user.name = undefined
-		user.email = undefined
+        }
+
+        await checkToken(res, user.token)
+
+        if (user.token !==  req.headers.token) {
+            return res.status(401).send({
+                mensagem: `Não autorizado`
+            })
+        }
         return res.status(201).send(user)
     } catch (error) {
         console.log(error)
@@ -40,5 +41,5 @@ const create = async (req, res) => {
 }
 
 module.exports = {
-    create
+    findUser
 }

@@ -6,6 +6,15 @@ function checkEmpty(res, element, name) {
     }
 }
 
+function checkHeadersToken(req) {
+    if (req.headers.token == undefined || req.headers.token == "") {
+        return res.status(401).send({
+            mensagem: `Não autorizado`
+        })
+    }
+}
+
 module.exports = {
-    checkEmpty
+    checkEmpty,
+    checkHeadersToken
 }
