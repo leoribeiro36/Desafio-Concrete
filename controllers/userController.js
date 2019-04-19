@@ -1,8 +1,6 @@
-const bcrypt = require('bcrypt');
 const User = require('../models').User;
-const Phone = require('../models').Phone;
 const jwt = require('jsonwebtoken');
-const secret = require ('../secret')
+const secret = require ('../secret');
 
 async function checkToken(res, token) {
     try {
@@ -19,27 +17,26 @@ const findUser = async (req, res) => {
         var user = await User.findOne({
             attributes: ['id', 'token', 'lastLogin', 'createdAt', 'updatedAt'],
             where: {id: req.params.id}
-        })
+        });
         if (!user) {
             return res.status(400).send({
                 mensagem: `Usuário não existe`
-            })
+            });
         }
 
-        await checkToken(res, user.token)
+        await checkToken(res, user.token);
 
         if (user.token !==  req.headers.token) {
             return res.status(401).send({
                 mensagem: `Não autorizado`
-            })
+            });
         }
-        return res.status(201).send(user)
+        return res.status(201).send(user);
     } catch (error) {
-        console.log(error)
-        res.status(500).send(error)
+        res.status(500).send(error);
     }
-}
+};
 
 module.exports = {
     findUser
-}
+};
