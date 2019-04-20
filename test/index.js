@@ -6,14 +6,10 @@ const User = require('../models').User;
 
 chai.use(chaiHttp);
 
+
 // ==> Test signup
 describe('Teste singUp', () => {
     it('Deve criar um novo usuário', (done) => {
-        /* await User.destroy({
-            where: {
-                email: "teste1@teste.com"
-            }
-        }); */
         const body = {
             "nome": "Teste1",
             "email": "teste1@teste.com",
@@ -251,7 +247,45 @@ describe('Teste singIn', () => {
             });
     });
 });
-
-/* describe('Teste buscar usuário', () => {
-
+/* User.destroy({
+    where: {
+        email: "teste1@teste.com"
+    }
 }); */
+describe('Teste buscar usuário', () => {
+    it('Deve retornar o usuário', (done) => {
+        User.findOne({
+            attributes: ['id', 'token'],
+            where: {
+                email: "teste1@teste.com"
+            }
+        }).then(function (value) {
+            console.log(value.dataValues.token);
+            chai.request(server)
+                .get(`/buscarUsuario/${value.dataValues.id}`)
+                .set('token', value.dataValues.token)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    done();
+                });
+        });
+
+    });
+
+    it('Deve informar que o usuário não está autorizado', (done) => {
+        User.findOne({
+            attributes: ['id', 'token'],
+            where: {
+                email: "teste1@teste.com"
+            }
+        }).then(function (value) {
+            console.log(value.dataValues.token);
+            chai.request(server)
+                .get(`/buscarUsuario/${value.dataValues.id}`)
+                .end((err, res) => {
+                    res.should.have.status(401);
+                    done();
+                });
+        });
+    });
+});

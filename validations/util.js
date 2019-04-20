@@ -22,9 +22,9 @@ function checkEmpty(res, element, name) {
 function checkHeadersToken(req) {
     try {
         if (req.headers.token == undefined || req.headers.token == "") {
-            throw {
+            return {
                 status: 401,
-                message: `Não autorizado`
+                mensagem: `Não autorizado`
             };
         }
     } catch (error) {

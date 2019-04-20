@@ -67,7 +67,6 @@ const signUp = async (req, res, next) => {
             return util.returnMessage(res, check.status, check.mensagem);
         }
         check = checkEmptyPhone(req.body.telefones);
-        console.log(check)
         if (check) {
             return util.returnMessage(res, check.status, check.mensagem);
         }

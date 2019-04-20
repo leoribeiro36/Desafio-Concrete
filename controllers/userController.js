@@ -31,7 +31,7 @@ const findUser = async (req, res) => {
                 mensagem: `Não autorizado`
             });
         }
-        return res.status(201).send(user);
+        return res.status(200).send(user);
     } catch (error) {
         res.status(500).send(error);
     }

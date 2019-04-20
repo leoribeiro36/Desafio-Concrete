@@ -2,7 +2,10 @@ const util = require('./util');
 
 const findUser = async (req, res, next) => {
     try {
-        util.checkHeadersToken(req);
+        var check = util.checkHeadersToken(req);
+        if (check) {
+            return util.returnMessage(res, check.status, check.mensagem);
+        }
         next();
     } catch (error) {
         return res.status(500).send({
