@@ -7,6 +7,6 @@ router.get('/', (req, res) => res.status(200).send(
     .get('*', (req, res) => res.status(200).send(
         {
             message: 'Route not found.'
-        }))
+        }));
         
-module.exports = router
+module.exports = router;

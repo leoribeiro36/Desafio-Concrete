@@ -4,11 +4,11 @@ const secret = require('../secret');
 const User = require('../models').User;
 const Phone = require('../models').Phone;
 
-function generateToken(req){
+function generateToken(req) {
     var token = jwt.sign({
         data: req.body.email,
         senha: req.body.senha
-      }, secret.secret, { expiresIn: 60 * 30 });
+    }, secret.secret, { expiresIn: 60 * 30 });
     return token;
 }
 
@@ -18,7 +18,7 @@ function encrypt(element) {
     return hash;
 }
 
-const signUp = async  (req, res) => {
+const signUp = async (req, res) => {
     try {
         var encryptPassword = encrypt(req.body.senha);
         var token = generateToken(req);
@@ -42,24 +42,34 @@ const signUp = async  (req, res) => {
         user.password = undefined;
         return res.status(201).send(user);
     } catch (error) {
-        res.status(500).send(error);
+        return res.status(400).send({
+            mensagem: 'Erro inesperado'
+        });
     }
 };
 
-const  signIn = async (req, res) => {
-    var token = generateToken(req);
-    await User.update({
-        token: token,
-        lastLogin: new Date()},
-        {where: {
-            email: req.body.email
-        }
-    });
-    var userRerutn = await User.findOne({
-        attributes: ['id', 'token', 'lastLogin', 'createdAt', 'updatedAt'],
-        where: {email: req.body.email}
-    });
-    return res.status(200).send(userRerutn);
+const signIn = async (req, res) => {
+    try {
+        var token = generateToken(req);
+        await User.update({
+            token: token,
+            lastLogin: new Date()
+        },
+            {
+                where: {
+                    email: req.body.email
+                }
+            });
+        var userRerutn = await User.findOne({
+            attributes: ['id', 'token', 'lastLogin', 'createdAt', 'updatedAt'],
+            where: { email: req.body.email }
+        });
+        return res.status(200).send(userRerutn);
+    } catch (error) {
+        return res.status(400).send({
+            mensagem: 'Erro inesperado'
+        });
+    }
 };
 
 module.exports = {
