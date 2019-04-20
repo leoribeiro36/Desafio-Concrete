@@ -5,6 +5,7 @@
     "database": "d7okiqlsv6k0g7",
     "host": "ec2-54-197-234-117.compute-1.amazonaws.com",
     "dialect": "postgres",
+    "protocol": "postgres",
     "dialectOptions": {
       "ssl": true
   }
