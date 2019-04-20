@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "postgres",
-    "password": "Pernambuco",
-    "database": "desafioBD",
-    "host": "127.0.0.1",
+    "username": "iymrgoqbngusrf",
+    "password": "abf0bff0345349e3c8868d9f53d06aba3700633c66b924de94c40d56fa138661",
+    "database": "d7okiqlsv6k0g7",
+    "host": "ec2-54-197-234-117.compute-1.amazonaws.com",
     "dialect": "postgres"
   },
   "test": {
