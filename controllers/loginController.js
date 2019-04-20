@@ -42,7 +42,7 @@ const signUp = async (req, res) => {
         user.password = undefined;
         return res.status(201).send(user);
     } catch (error) {
-        return res.status(400).send({
+        return res.status(500).send({
             mensagem: 'Erro inesperado'
         });
     }
@@ -66,7 +66,7 @@ const signIn = async (req, res) => {
         });
         return res.status(200).send(userRerutn);
     } catch (error) {
-        return res.status(400).send({
+        return res.status(500).send({
             mensagem: 'Erro inesperado'
         });
     }
